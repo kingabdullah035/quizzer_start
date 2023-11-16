@@ -6,28 +6,27 @@ import { QuestionEdit } from "./QuestionEdit";
 
 import "./QuizEdit.css";
 
-export const QuizEdit = ({
-    quiz,
-    editQuiz,
-    deleteQuiz,
-    switchEdit,
-    resetView
-}: {) => {
+export const QuizEdit = ({ quiz, editQuiz, deleteQuiz, switchEdit, resetView }: 
+    {
+        quiz: Quiz;
+        editQuiz: (qId: number, newQuiz: Quiz) => void;
+        deleteQuiz: (qId: number) => void;
+        switchEdit: () => void;
+        resetView: () => void;
+    }) => {
     const [newQuiz, setNewQuiz] = useState<Quiz>({ ...quiz });
 
     const editQuestion = (questionId: number, newQuestion: Question) => {
         setNewQuiz({
             ...newQuiz,
-            questionList: newQuiz.questionList.map(
-            )
+            questionList: newQuiz.questionList.map((quest: Question): Question => quest.id === questionId ? newQuestion : quest)
         });
     };
 
     const removeQuestion = (questionId: number) => {
         setNewQuiz({
             ...newQuiz,
-            questionList: newQuiz.questionList.filter(
-            )
+            questionList: newQuiz.questionList.filter((quest: Question): boolean => quest.id !== questionId)
         });
     };
 
@@ -42,7 +41,7 @@ export const QuizEdit = ({
                 (q: Question, idx: number): Question => {
                     if (idx === idx1) return newQuiz.questionList[idx2];
                     if (idx === idx2) return newQuiz.questionList[idx1];
-                    return;
+                    return newQuiz.questionList[idx];
                 }
             )
         });
@@ -79,7 +78,7 @@ export const QuizEdit = ({
                             ) => {
                                 setNewQuiz({
                                     ...newQuiz,
-                                    published: 
+                                    published: e.target.checked
                                 });
                             }}
                         ></Form.Check>
